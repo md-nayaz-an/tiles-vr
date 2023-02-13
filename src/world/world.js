@@ -6,8 +6,8 @@ import { OrbitControls, useHelper } from '@react-three/drei';
 import { OrthographicCamera } from '@react-three/drei';
 import { CameraHelper, PointLightHelper, SpotLightHelper } from 'three';
 
-import LookControls from '../controls/lookControls.js';
 import WasdControls from '../controls/wasdControls.js';
+
 import { VRButton, XR, Controllers } from '@react-three/xr';
 
 function World() {
@@ -24,10 +24,6 @@ function World() {
         <axesHelper args={[2000]} />
         <Room />
         <WasdControls />
-        <OrbitControls
-            target={[90,150,80]}
-            enableZoom={false}
-          />
         </XR>
       </Canvas>
     </div>

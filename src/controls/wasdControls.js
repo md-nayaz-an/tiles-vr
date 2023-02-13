@@ -1,7 +1,11 @@
+import * as THREE from 'three';
 import { useEffect, useRef } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
-import { Vector3 } from 'three'
-import { useXR } from '@react-three/xr'
+import { useFrame, useThree, extend } from '@react-three/fiber'
+import { useXR } from '@react-three/xr';
+import CameraControls from 'camera-controls';
+
+CameraControls.install({ THREE })
+extend({ CameraControls })
 
 // Reference to a set of active KeyboardEvent.code entries
 const useCodes = () => {
@@ -19,47 +23,44 @@ const useCodes = () => {
   return codes
 }
 
-const vec = new Vector3()
 
 // Rotation logic from three/examples/jsm/controls/PointerLockControls.js
 export default function WasdControls() {
   const { player } = useXR();
-  console.log(player)
-  const { camera } = useThree()
-  const code = useCodes()
-  const moveForward = (distance) => {
-    vec.setFromMatrixColumn(camera.matrix, 0)
-    vec.crossVectors(camera.up, vec)
-    camera.position.addScaledVector(vec, distance)
-  }
-  const moveRight = (distance) => {
-    vec.setFromMatrixColumn(camera.matrix, 0)
-    camera.position.addScaledVector(vec, distance)
-  }
+  const gl = useThree((state) => state.gl);
+  const camera = useThree((state) => state.camera);
+  const camControls = useRef();
+
+  const code = useCodes();
+  
   useFrame((_, delta) => {
-    const speed = code.current.has('ShiftLeft') ? 5 : 2;
     if (code.current.has('KeyW')) {
-      moveForward(delta * speed);
-      player.position.x += 5;
-    }
-    if (code.current.has('KeyA')) {
-      moveRight(-delta * speed)
-      player.position.y += 5;
+      camControls.current.forward( 10 * delta, false)
     }
     if (code.current.has('KeyS')) {
-      moveForward(-delta * speed)
-      player.position.x -= 5;
+      camControls.current.forward( -10 * delta, false)
+    }
+    if (code.current.has('KeyA')) {
+      camControls.current.truck( -10 * delta, 0, false)
     }
     if (code.current.has('KeyD')) {
-      moveRight(delta * speed);
-      player.position.y -= 5;
+      camControls.current.truck( 10 * delta, 0, false)
     }
-    if (code.current.has('KeyQ')) {
-      player.position.z += 5;
+    if (code.current.has('ArrowUp')) {
+      camControls.current.rotate(0, -50 * THREE.MathUtils.DEG2RAD * delta, 0, true );
     }
-    if (code.current.has('KeyE')) {
-      player.position.z -= 5;
+    if (code.current.has('ArrowDown')) {
+      camControls.current.rotate(0, 50 * THREE.MathUtils.DEG2RAD * delta, 0, true);
     }
+    if (code.current.has('ArrowLeft')) {
+      camControls.current.rotate(- 100 * THREE.MathUtils.DEG2RAD * delta, 0, true);
+    }
+    if (code.current.has('ArrowRight')) {
+      camControls.current.rotate( 100 * THREE.MathUtils.DEG2RAD * delta, 0, true);
+    }
+    camControls.current.update(delta)
   })
-  return null
+  return (
+    <cameraControls ref={camControls} args={[camera, gl.domElement]} />
+  )
 }
