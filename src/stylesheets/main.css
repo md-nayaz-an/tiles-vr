@@ -1,0 +1,73 @@
+.box{
+  min-height: 100vh;
+}
+
+.drawer {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  float: right;
+  width: 19.5%;
+  border-left: 2px solid rgba(178,178,178,1);
+  font: normal 16px/normal "Times New Roman", Times, serif;
+  color: rgba(0,0,0,0.9);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  transition: width 1s linear 0.5s;
+  overflow: hidden;
+}
+
+.drawer-open {
+  width: 19.5%;
+}
+.drawer-close {
+  width: 0%;
+}
+
+.main {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  height: 100%;
+  width: 80%;
+  padding: 0px 2px 0px 2px ;
+  /* border: 2px solid rgba(178,178,178,1);
+  -webkit-border-radius: 5px;
+  border-radius: 5px; */
+  font: normal 16px/normal "Times New Roman", Times, serif;
+  color: rgba(0,0,0,0.9);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  transition: width 1s linear 0.5s;
+}
+
+.main-open {
+  width: 80%;
+}
+.main-close{
+  width: 98%;
+}
+
+.title {
+  min-height: 9vh;
+  position: relative;
+}
+
+.main > div:nth-child(3) {
+  width: 100%
+}
+
+.main > div:nth-child(3) > div:nth-child(2) {
+  border: 2px solid rgba(178,178,178,1);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.main > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+  min-height: 90vh;
+  width: 100%;
+}
