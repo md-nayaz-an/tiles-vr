@@ -58,8 +58,10 @@ export default function PlayerControls(props) {
       player.position.x += 10
     }
     if (codes.current.has('KeyE')) {
+      player.position.z += 10
     }
     if (codes.current.has('KeyQ')) {
+      player.position.z -= 10
     }
     if (codes.current.has('ArrowUp')) {
     }
