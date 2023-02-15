@@ -1,10 +1,11 @@
 import React, {useRef, useEffect, useContext} from 'react';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
+import * as THREE from 'three';
 
 import { useHelper, useTexture } from '@react-three/drei';
 
-import { BoxHelper, RepeatWrapping, TextureLoader } from 'three';
+import { Box3, BoxHelper, RepeatWrapping, TextureLoader } from 'three';
 
 import imgSelectorContext from '../contexts';
 
@@ -19,24 +20,29 @@ const comparer = (obj1, obj2, i=0) => {
   })
 }
 
-export function Room() {
 
-  const obj = useLoader( GLTFLoader, './assets/Toilet Model.gltf');
-  console.log(obj)//[Object.keys(obj.nodes)[0]]);
+export function Room(props) {
+
   const imgContext = useContext(imgSelectorContext);
-  
+
+  const obj = props.obj;
+  //console.log(obj)//[Object.keys(obj.nodes)[0]]);
+
   const texture = useLoader(TextureLoader ,`./assets/textures/${imgContext}`);
   texture.flipY = false;
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
+
   useEffect(() => {
-    console.log(texture);
-    console.log(obj.materials['M_03_ceramic_2']);
+
+    //console.log(texture);
+    //console.log(obj.materials['M_03_ceramic_2']);
     const val = obj.materials['M_03_ceramic_2'].map;
     //comparer(val,texture);
      Object.assign(obj.materials['M_03_ceramic_2'], {
       map: texture,
     });
+
 
 
     return;
@@ -60,9 +66,6 @@ export function Room() {
 }
 function LoadPrimitive(props) {
   const ref = useRef();
-  //useHelper(ref, BoxHelper)
-  if(props.texture !== null) {
-  }
 
   return(
     <primitive
