@@ -1,11 +1,13 @@
 import React, {useRef, useEffect, useContext} from 'react';
-import { useLoader } from '@react-three/fiber';
+import { useLoader, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import * as THREE from 'three';
 
 import { useHelper, useTexture } from '@react-three/drei';
 
 import { Box3, BoxHelper, RepeatWrapping, TextureLoader } from 'three';
+
+import { BBAnchor } from '@react-three/drei';
 
 import imgSelectorContext from '../contexts';
 
@@ -26,13 +28,14 @@ export function Room(props) {
   const imgContext = useContext(imgSelectorContext);
 
   const obj = props.obj;
-  //console.log(obj)//[Object.keys(obj.nodes)[0]]);
+  console.log(obj)//[Object.keys(obj.nodes)[0]]);
 
   const texture = useLoader(TextureLoader ,`./assets/textures/${imgContext}`);
   texture.flipY = false;
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
 
+  const { camera, scene } = useThree();
   useEffect(() => {
 
     //console.log(texture);
@@ -43,6 +46,7 @@ export function Room(props) {
       map: texture,
     });
 
+    console.log(camera);
 
 
     return;
@@ -50,6 +54,7 @@ export function Room(props) {
 
   return(
     <>
+    <primitive rotation-x={Math.PI/2} object={obj.scene} scale={[0.5,0.5,0.5]}/>
       {
         Object.entries(obj.nodes).map(([index, node])  => {
           if(typeof node.material !== 'undefined') {
@@ -58,7 +63,7 @@ export function Room(props) {
           //    return(<LoadPrimitive key={index} object={node} texture={imgContext} />)
             }
           }
-          return(<LoadPrimitive key={index} object={node} texture={null} />)
+          //return(<LoadPrimitive key={index} object={node} texture={null} />)
         })
       }
     </>
@@ -72,6 +77,7 @@ function LoadPrimitive(props) {
       ref={ref}
       rotation-x={Math.PI / 2}
       object={props.object}
+      scale={[0.5,0.5,0.5]}
       //onClick={(e) => console.log(e.object.name)}
     />
   )

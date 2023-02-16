@@ -2,10 +2,6 @@ import * as THREE from 'three';
 import { useEffect, useRef, useState } from 'react'
 import { useFrame, useThree, extend } from '@react-three/fiber'
 import { useXR } from '@react-three/xr';
-import CameraControls from 'camera-controls';
-
-CameraControls.install({ THREE })
-extend({ CameraControls })
 
 // Reference to a set of active KeyboardEvent.code entries
 
@@ -15,11 +11,14 @@ export default function PlayerControls(props) {
 
   const { player } = useXR();
   const val = useXR();
-  
+  const { scene } = useThree();
+  console.log(scene.scale)
+  console.log(player.scale)
   const codes = useRef(new Set())
 
   const [flag, setFlag] = useState(false)
   const [initV] = useState(props.center);
+
 
   useEffect(() => {
     const onKeyDown = (e) => { codes.current.add(e.code) }
@@ -29,13 +28,13 @@ export default function PlayerControls(props) {
     console.log(props.center)
 
     console.log(val)
-
+/*
     player.position.x = props.center.x;
     player.position.y = props.center.y;
-    player.position.z = -props.center.z;
+    player.position.z = -props.center.z; */
     player.rotation.x = 1.5
     player.up.y = 0;
-    
+
     return () => {
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)

@@ -35,14 +35,15 @@ export default function WasdControls(props) {
     camera.position.x = props.center.x;
     camera.position.y = props.center.y;
     camera.position.z = -props.center.z;
+    camControls.current.setLookAt(10,10,10,0,100,0,true)
     
     const v = props.center
     camControls.current.setOrbitPoint(v.x,v.y,v.z);
     console.log(props.center)
-    console.log(camera.position)
-    
+    console.log(camControls.current.getPosition())
+    console.log(camera)
     return () => {
-      props.setCenter(props.center)
+      //props.setCenter(props.center)
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)
     }
@@ -52,40 +53,40 @@ export default function WasdControls(props) {
 
   useFrame((_, delta) => {
     if (codes.current.has('KeyW')) {
-      camControls.current.forward( 10, true)
+      camControls.current.forward( 5, true)
       setFlag(!flag);
     }
     if (codes.current.has('KeyS')) {
-      camControls.current.forward( -10, true)
+      camControls.current.forward( -5, true)
       setFlag(!flag);
     }
     if (codes.current.has('KeyA')) {
-      camControls.current.truck( -10, 0, true)
+      camControls.current.truck( -5, 0, true)
       setFlag(!flag);
     }
     if (codes.current.has('KeyD')) {
-      camControls.current.truck( 10, 0, true)
+      camControls.current.truck( 5, 0, true)
       setFlag(!flag);
     }
     if (codes.current.has('KeyE')) {
-      camControls.current.truck( 0, -10, true)
+      camControls.current.truck( 0, -5, true)
       setFlag(!flag);
     }
     if (codes.current.has('KeyQ')) {
-      camControls.current.truck( 0, 10, true)
+      camControls.current.truck( 0, 5, true)
       setFlag(!flag);
     }
     if (codes.current.has('ArrowUp')) {
-      camControls.current.rotate( 0 , 0.05, true);
+      camControls.current.rotate( 0 , 0.025, true);
     }
     if (codes.current.has('ArrowDown')) {
-      camControls.current.rotate( 0, -0.05, true);
+      camControls.current.rotate( 0, -0.025, true);
     }
     if (codes.current.has('ArrowLeft')) {
-      camControls.current.rotate( 0.05 , 0, true);
+      camControls.current.rotate( 0.025 , 0, true);
     }
     if (codes.current.has('ArrowRight')) {
-      camControls.current.rotate( -0.05 , 0, true);
+      camControls.current.rotate( -0.025 , 0, true);
     }
     if (codes.current.has('KeyR')) {
       console.log(initV)
@@ -94,9 +95,9 @@ export default function WasdControls(props) {
     
     if(flag) {
       let pos = camera.position
-      console.log(pos);
-      props.setCenter(pos);
-      console.log(props.center)
+      //console.log(pos);
+      //props.setCenter(pos);
+      //console.log(props.center)
       setFlag(!flag);
     }
     camControls.current.update(delta)

@@ -1,10 +1,13 @@
 import { React, useRef, useEffect, useState } from 'react';
-import { Canvas,useLoader, useFrame } from '@react-three/fiber';
+import { Canvas,useLoader, useFrame, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import { Room } from './plane.js';
 
+import * as THREE from 'three';
+
+import { PerspectiveCamera, OrthographicCamera, Bounds, Center } from '@react-three/drei';
+
 import { FirstPersonControls, OrbitControls, PointerLockControls, useHelper } from '@react-three/drei';
-import { OrthographicCamera } from '@react-three/drei';
 import { Box3, CameraHelper, Vector3 } from 'three';
 
 import WasdControls from '../controls/wasdControls.js';
@@ -13,18 +16,28 @@ import VRControls from '../controls/vrControls.js';
 
 import { VRButton, XR, Controllers } from '@react-three/xr';
 
+
 function World() {
 
   const obj = useLoader( GLTFLoader, './assets/Toilet Model.gltf');
+  //console.log(obj.scene);
+  obj.scene.scale.copy({x:0.5, y:0.5, z:0.5});
   const box = new Box3().setFromObject(obj.scene);
-  const [center, setCenter] = useState(box.getCenter(new Vector3()));
+  const size = box.getSize(new THREE.Vector3()).length();
+  const cent = box.getCenter(new THREE.Vector3());
+  /*console.log(cent)
+  obj.scene.position.x += (obj.scene.position.x - cent.x);
+  obj.scene.position.y += (obj.scene.position.y - cent.y);
+  obj.scene.position.z += (obj.scene.position.z - cent.z);
+  */console.log(obj.scene);
+  const [center, setCenter] = useState({x:1,y:1,z:1});
   const [session, setSession] = useState(false);
 
   return(
     <div>
       <VRButton />
       <Canvas
-        camera={{ up:[0,0,1], fov: 50, near: 10, far: 200000, position: [center.x, center.y, -center.z]}}>
+        camera={{ up:[0,0,1], fov: 30, near: 10, far: 200000, position: [60, 70, -110]}}>
         <XR
           onSessionStart={(e) => setSession(true)}
           onSessionEnd={(e) => setSession(false)}
@@ -33,13 +46,18 @@ function World() {
         <ambientLight color={"#f1f1f1"} />
         <LightComp />
         <axesHelper args={[2000]} />
-
+       
+        <mesh position={[cent.x,cent.y,cent.z]}>
+          <boxGeometry args={[1,1,1]} />
+          <meshStandardMaterial color={'blue'} />
+        </mesh>
+        <Center>
         <Room 
           obj={obj}
-          center={center}
-          setCenter={setCenter}
+         // center={center}
+          //setCenter={setCenter}
         />
-        
+        </Center>
         <Controls
           session={session}
           center={center}
@@ -55,10 +73,10 @@ function World() {
 function Controls(props) {
   if(!props.session)
     return (
-      <WasdControls
-          center={props.center}
-          setCenter={props.setCenter}
-      />
+      <>
+        <WasdControls center={props.center} setCenter={props.setCenter} />
+        <OrbitControls />
+      </>
     )
   else
       return(<>
@@ -67,6 +85,7 @@ function Controls(props) {
           setCenter={props.setCenter}
         />
         <VRControls />
+        <OrthographicCamera makeDefault/>
         </>
       )
 }

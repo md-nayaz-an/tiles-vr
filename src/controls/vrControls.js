@@ -1,5 +1,5 @@
 import { useXR, useController } from '@react-three/xr';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 
 import { useRef } from 'react';
@@ -20,7 +20,7 @@ export default function VRControls({
 	zeroY = true,
 	horizontalSensitivity = 0.5,
 	forwardSensistivity = 0.5,
-	rotationSensitivity = 0.5,
+	rotationSensitivity = 0.05,
 	deadzone = 0.05,
 	horizontalAxis = 2,
 	forwardAxis = 3,
@@ -30,6 +30,7 @@ export default function VRControls({
 	applyRotation = true,
 }) {
 	const { player } = useXR();
+  const val = useXR();
 	const controller = useController(hand);
 	const forward = useRef(new Vector3());
 	const horizontal = useRef(new Vector3());
