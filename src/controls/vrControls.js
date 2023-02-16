@@ -18,9 +18,9 @@ import { useRef } from 'react';
 export default function VRControls({
 	hand = 'right',
 	zeroY = true,
-	horizontalSensitivity = 0.05,
-	forwardSensistivity = 0.05,
-	rotationSensitivity = 0.05,
+	horizontalSensitivity = 0.5,
+	forwardSensistivity = 0.5,
+	rotationSensitivity = 0.5,
 	deadzone = 0.05,
 	horizontalAxis = 2,
 	forwardAxis = 3,
