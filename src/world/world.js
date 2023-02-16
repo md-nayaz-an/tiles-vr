@@ -8,7 +8,8 @@ import { OrthographicCamera } from '@react-three/drei';
 import { Box3, CameraHelper, Vector3 } from 'three';
 
 import WasdControls from '../controls/wasdControls.js';
-import PlayerControls from '../controls/playerControl.js';
+import PlayerControls from '../controls/playerKeyboardControl.js';
+import VRControls from '../controls/vrControls.js';
 
 import { VRButton, XR, Controllers } from '@react-three/xr';
 
@@ -60,11 +61,13 @@ function Controls(props) {
       />
     )
   else
-      return(
+      return(<>
         <PlayerControls
           center={props.center}
           setCenter={props.setCenter}
         />
+        <VRControls />
+        </>
       )
 }
 
