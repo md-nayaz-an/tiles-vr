@@ -30,6 +30,38 @@ export function Room(props) {
   const obj = props.obj;
   console.log(obj)//[Object.keys(obj.nodes)[0]]);
 
+  const tileObj = {...obj}
+    console.log(tileObj)
+    {
+      let i = 0
+      Object.entries(obj.nodes).map(([index, node])  => {
+        if(typeof node.material !== 'undefined') {
+          if(node.material.name === 'M_03_ceramic_2') {
+            //delete obj.nodes[index]
+            console.log("***tiles:" + node.name);
+            let remove = obj.scene.getObjectByName(index)
+            let parent = remove.parent;
+            parent.remove(remove)
+            console.log(remove)
+        //    return(<LoadPrimitive key={index} object={node} texture={imgContext} />)
+          }
+          else {
+            //delete tileObj.nodes[index]
+            console.log("+++others:" + node.name)
+            console.log(tileObj.nodes[index])
+          }
+        }
+        else {
+          //delete tileObj.nodes[index]
+          console.log("---Undefined:" + node.name)
+          console.log(obj.nodes[index])
+        }
+        i += 1
+        //return(<LoadPrimitive key={index} object={node} texture={null} />)
+      })
+      console.log(obj)
+    }
+
   const texture = useLoader(TextureLoader ,`./assets/textures/${imgContext}`);
   texture.flipY = false;
   texture.wrapS = RepeatWrapping;
@@ -37,6 +69,7 @@ export function Room(props) {
 
   const { camera, scene } = useThree();
   useEffect(() => {
+    
 
     //console.log(texture);
     //console.log(obj.materials['M_03_ceramic_2']);
@@ -46,29 +79,23 @@ export function Room(props) {
       map: texture,
     });
 
-    console.log(camera);
-
-
     return;
   }, [imgContext]);
 
   return(
     <>
     <primitive rotation-x={Math.PI/2} object={obj.scene} scale={[0.5,0.5,0.5]}/>
-      {
-        Object.entries(obj.nodes).map(([index, node])  => {
-          if(typeof node.material !== 'undefined') {
-            if(node.material.name === 'M_03_ceramic_2') {
-          //    console.log(node);
-          //    return(<LoadPrimitive key={index} object={node} texture={imgContext} />)
-            }
-          }
-          //return(<LoadPrimitive key={index} object={node} texture={null} />)
-        })
-      }
     </>
   )
 }
+
+
+
+
+
+
+
+
 function LoadPrimitive(props) {
   const ref = useRef();
 

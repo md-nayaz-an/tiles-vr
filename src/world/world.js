@@ -29,7 +29,7 @@ function World() {
   obj.scene.position.x += (obj.scene.position.x - cent.x);
   obj.scene.position.y += (obj.scene.position.y - cent.y);
   obj.scene.position.z += (obj.scene.position.z - cent.z);
-  */console.log(obj.scene);
+  */
   const [center, setCenter] = useState({x:1,y:1,z:1});
   const [session, setSession] = useState(false);
 

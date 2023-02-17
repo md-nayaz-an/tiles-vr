@@ -39,9 +39,7 @@ export default function WasdControls(props) {
     
     const v = props.center
     camControls.current.setOrbitPoint(v.x,v.y,v.z);
-    console.log(props.center)
-    console.log(camControls.current.getPosition())
-    console.log(camera)
+
     return () => {
       //props.setCenter(props.center)
       window.removeEventListener('keydown', onKeyDown)

@@ -12,8 +12,6 @@ export default function PlayerControls(props) {
   const { player } = useXR();
   const val = useXR();
   const { scene } = useThree();
-  console.log(scene.scale)
-  console.log(player.scale)
   const codes = useRef(new Set())
 
   const [flag, setFlag] = useState(false)
@@ -25,9 +23,7 @@ export default function PlayerControls(props) {
     const onKeyUp = (e) => codes.current.delete(e.code)
     window.addEventListener('keydown', onKeyDown)
     window.addEventListener('keyup', onKeyUp)
-    console.log(props.center)
 
-    console.log(val)
 /*
     player.position.x = props.center.x;
     player.position.y = props.center.y;
