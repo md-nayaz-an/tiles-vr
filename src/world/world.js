@@ -20,8 +20,16 @@ import { VRButton, XR, Controllers } from '@react-three/xr';
 function World() {
 
   const obj = useLoader( GLTFLoader, './assets/Toilet Model.gltf');
+  /*
+  obj.scene.traverse( (child) => {
+    if( child instanceof THREE.Mesh){
+      console.log(child)
+      child.geometry.scale(0.5,0.5,0.5)
+      console.log(child)
+    }
+  }) */
+
   //console.log(obj.scene);
-  obj.scene.scale.copy({x:0.5, y:0.5, z:0.5});
   const box = new Box3().setFromObject(obj.scene);
   const size = box.getSize(new THREE.Vector3()).length();
   const cent = box.getCenter(new THREE.Vector3());

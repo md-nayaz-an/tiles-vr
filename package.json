@@ -20,6 +20,7 @@
     "camera-controls": "^2.2.1",
     "file-api": "^0.10.4",
     "hold-event": "^0.2.0",
+    "localtunnel": "^2.0.2",
     "obj-file-parser": "^0.5.3",
     "parse-obj": "^0.0.0",
     "react": "^18.2.0",
