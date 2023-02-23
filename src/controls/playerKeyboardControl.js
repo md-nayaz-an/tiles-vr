@@ -30,8 +30,8 @@ export default function PlayerControls(props) {
     player.position.x = props.center.x;
     player.position.y = props.center.y;
     player.position.z = -props.center.z; */
-    player.rotation.x = 1.5
-    player.up.y = 0;
+   
+    
 
     return () => {
       window.removeEventListener('keydown', onKeyDown)

@@ -19,7 +19,7 @@ export default function VRControls({
 	hand = 'right',
 	zeroY = true,
 	horizontalSensitivity = 0.5,
-	forwardSensistivity = 0.5,
+	forwardSensistivity = 0.05,
 	rotationSensitivity = 0.05,
 	deadzone = 0.05,
 	horizontalAxis = 2,
@@ -51,7 +51,7 @@ export default function VRControls({
 		}, [])
 
 	let i = 1
-	useFrame(() => {
+	useFrame((_,delta) => {
 
 
 		if (controller && player) {
@@ -59,6 +59,14 @@ export default function VRControls({
 			const { buttons } = controller.inputSource.gamepad;
 			const camera = player.children[0];
 			const cameraMatrix = camera.matrixWorld.elements;
+
+			
+			if(left.inputSource.gamepad.buttons[5].pressed){
+				setScale(scale+0.001)
+			}
+			if(left.inputSource.gamepad.buttons[4].pressed){
+				setScale(scale-0.001)
+			}
 
 			forward.current
 				.set(-cameraMatrix[8], -cameraMatrix[9], -cameraMatrix[10])

@@ -70,7 +70,6 @@ export default function LoadTilePrimitive(props) {
     >
       <mesh
         ref={ref}
-        rotation-x={Math.PI / 2}
         geometry={props.node.geometry}
         //visible={!Hover}
         scale={props.scale}

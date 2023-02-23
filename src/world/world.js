@@ -17,7 +17,7 @@ import VRControls from '../controls/vrControls.js';
 import Panel from '../xrui/imageSelector.js';
 
 import { VRButton, XR, Controllers } from '@react-three/xr';
-
+import StatsVR from "statsvr";
 
 function World() {
 
@@ -34,7 +34,7 @@ function World() {
     }
   })
 */
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(0.172);
 
   useEffect(() => {
 
@@ -60,8 +60,6 @@ function World() {
           aspect={1200/600}
           radius={(1200 + 600) / 4}
           fov={75}
-          position={[60,70,-110]}
-          onUpdate={self => self.updateProjectionMatrix()}
         />
         <XR
           onSessionStart={(e) => setSession(true)}
@@ -81,7 +79,7 @@ function World() {
             <Panel />
           </mesh>
         </Billboard>
-        <Center>
+        <Center disableY={true}>
           <mesh scale={scale} visible={true}>
             <Room 
               obj={obj}
@@ -107,6 +105,18 @@ function World() {
 }
 
 function Controls(props) {
+  
+  const { scene, camera } = useThree();
+  const statsVR = new StatsVR(scene, camera);
+  statsVR.setX(3)
+  statsVR.setY(3)
+  statsVR.setZ(-10)
+  
+  useFrame(() => {
+    statsVR.setCustom1('scale:' + props.scale)
+    statsVR.update()
+  })
+  
   if(!props.session) {
     return (
       <>

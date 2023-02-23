@@ -127,7 +127,7 @@ export function Room(props) {
           loc = itemData.length - 1
         imgContext.setImgSrc(itemData[loc-1])
 			}
-
+      
     }
 
   })
@@ -167,7 +167,6 @@ function LoadPrimitive(props) {
     <mesh
       scale={props.scale}
       ref={ref}
-      rotation-x={Math.PI / 2}
       geometry={props.node.geometry}
       material={props.node.material}
       //onClick={(e) => console.log(e.object.name)}
