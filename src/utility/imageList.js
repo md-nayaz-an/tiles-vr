@@ -35,13 +35,17 @@ export default function TitlebarImageList() {
 const itemData = [
   'Blonde-Sandstone-Architextures.jpg',
   'Calacatta-Vena-Architextures.jpg',
+  'Travertine-Architextures.jpg',
+
   'Granite-Architextures.jpg',
   'Green-Marble-Architextures.jpg',
   'grungy-gray-marble-textured-background.jpg',
+  
   'M_02_ceramic_3.jpg',
   'M_03_ceramic_1.jpg',
   'M_03_ceramic_2.jpg',
+  
   'M_03_go_cua.jpg',
   'M_05_inox2.png',
-  'Travertine-Architextures.jpg'
+  'Polished-Concrete-Architextures.jpg'
 ];

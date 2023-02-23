@@ -11,13 +11,15 @@ export default function PlayerControls(props) {
 
   const { player } = useXR();
   const val = useXR();
-  const { scene } = useThree();
+  console.log(val);
+  const { gl,scene, camera } = useThree();
+  camera.matrixAutoUpdate = false
   const codes = useRef(new Set())
 
   const [flag, setFlag] = useState(false)
   const [initV] = useState(props.center);
 
-
+  
   useEffect(() => {
     const onKeyDown = (e) => { codes.current.add(e.code) }
     const onKeyUp = (e) => codes.current.delete(e.code)
@@ -38,34 +40,38 @@ export default function PlayerControls(props) {
   }, [])
 
 
-
+  const speed = 5
   useFrame((_, delta) => {
+
+
     if (codes.current.has('KeyW')) {
-      player.position.y += 10
+      player.position.y += speed
+
     }
     if (codes.current.has('KeyS')) {
-      player.position.y -= 10
+      player.position.y -= speed
     }
     if (codes.current.has('KeyA')) {
-      player.position.x -= 10
+      player.position.x -= speed
     }
     if (codes.current.has('KeyD')) {
-      player.position.x += 10
+      player.position.x += speed
     }
     if (codes.current.has('KeyE')) {
-      player.position.z += 10
+      player.position.z += speed
     }
     if (codes.current.has('KeyQ')) {
-      player.position.z -= 10
+      player.position.z -= speed
     }
     if (codes.current.has('ArrowUp')) {
-    }
+}
     if (codes.current.has('ArrowDown')) {
     }
     if (codes.current.has('ArrowLeft')) {
+
     }
     if (codes.current.has('ArrowRight')) {
-    }
+      }
     if (codes.current.has('KeyR')) {
     }
   })

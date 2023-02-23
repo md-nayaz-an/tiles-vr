@@ -5,12 +5,15 @@ import * as THREE from 'three';
 
 import { useHelper, useTexture } from '@react-three/drei';
 
-import { Box3, BoxHelper, RepeatWrapping, TextureLoader } from 'three';
+import { Box3, BoxHelper, RepeatWrapping, TextureLoader, Vector3 } from 'three';
 
 import { BBAnchor } from '@react-three/drei';
 
+import ThreeMeshUI from 'three-mesh-ui';
+
 import imgSelectorContext from '../contexts';
 import LoadTilePrimitive from './tileInteractivity';
+import { useController } from '@react-three/xr';
 
 const comparer = (obj1, obj2, i=0) => {
   Object.keys(obj1).map(key => {
@@ -29,19 +32,48 @@ export function Room(props) {
   const imgContext = useContext(imgSelectorContext);
 
   const tileObj = props.obj;
-  console.log(tileObj)//[Object.keys(obj.nodes)[0]]);
+  //console.log(tileObj)//[Object.keys(obj.nodes)[0]]);
 
   const obj = tileObj.scene.clone();
   const { nodes, materials } = tileObj;
-  console.log(nodes);
+  //console.log(nodes);
   
-  const texture = useLoader(TextureLoader ,`./assets/textures/${imgContext}`);
+  const texture = useLoader(TextureLoader ,`./assets/textures/${imgContext.imgSrc}`);
   texture.flipY = false;
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
-  console.log(texture)
+  //console.log(texture)
+  const { scene, camera } = useThree();
+
+  const itemData = [
+    'Blonde-Sandstone-Architextures.jpg',
+    'Calacatta-Vena-Architextures.jpg',
+    'Travertine-Architextures.jpg',
   
-  const { camera, scene } = useThree();
+    'Granite-Architextures.jpg',
+    'Green-Marble-Architextures.jpg',
+    'grungy-gray-marble-textured-background.jpg',
+    
+    'M_02_ceramic_3.jpg',
+    'M_03_ceramic_1.jpg',
+    'M_03_ceramic_2.jpg',
+    
+    'M_03_go_cua.jpg',
+    'M_05_inox2.png',
+    'Polished-Concrete-Architextures.jpg'
+  ];
+  
+
+  /*useEffect(() => {
+    if (props.session) {
+      scene.scale.set(0.5,0.5,0.5);
+      scene.rotateOnAxis({x:0,y:0,z:1}, Math.PI / 4)
+    }
+      console.log(scene)
+    return
+  }, [props.session])
+*/
+
   useEffect(() => {
     /*
     Object.entries(nodes).map(([index, node])  => {
@@ -63,13 +95,42 @@ export function Room(props) {
     //console.log(obj.materials['M_03_ceramic_2']);
     const val = materials['M_03_ceramic_2'].map;
     //comparer(val,texture);
-     Object.assign(materials['M_03_ceramic_2'], {
+    Object.assign(materials['M_03_ceramic_2'], {
       map: texture,
     });
-
+   
     return;
   }, [imgContext]);
 
+
+    const controller = useController('right');
+
+
+  let i = 0;
+  useFrame((_, delta) => {
+    if(controller) {
+      i += delta
+      const { buttons } = controller.inputSource.gamepad;
+      
+			if(buttons[5].pressed && i>0.4){
+        i = 0
+        let loc = itemData.indexOf(imgContext.imgSrc);
+        if(loc === itemData.length - 1)
+          loc = 0
+        imgContext.setImgSrc(itemData[loc+1])
+			}
+
+			if(buttons[4].pressed && i>0.4){
+        i = 0
+        let loc = itemData.indexOf(imgContext.imgSrc);
+        if(loc === 0)
+          loc = itemData.length - 1
+        imgContext.setImgSrc(itemData[loc-1])
+			}
+
+    }
+
+  })
   return(
     <>
       {//<primitive rotation-x={Math.PI/2} object={obj}/>
@@ -77,18 +138,20 @@ export function Room(props) {
         Object.entries(nodes).map(([index, node])  => {
           if(typeof node.material !== 'undefined') {
             if(node.material.name === 'M_03_ceramic_2') {
-              console.log("***tiles:" + node.name);
+              //console.log("***tiles:" + node.name);
               return(
                 <LoadTilePrimitive
                   key={index}
                   node={node}
-                  texture={imgContext}
+                  imgContext={imgContext}
+                  texture={texture}
                   material={materials['M_03_ceramic_2']}
+                  scale={props.scale}
                 />)
             return
             }
           }
-          return(<LoadPrimitive key={index} node={node} />)
+          return(<LoadPrimitive key={index} node={node} scale={props.scale} />)
         })
       }
     </>
@@ -99,11 +162,14 @@ export function Room(props) {
 function LoadPrimitive(props) {
   const ref = useRef();
 
+
   return(
-    <primitive
+    <mesh
+      scale={props.scale}
       ref={ref}
       rotation-x={Math.PI / 2}
-      object={props.node}
+      geometry={props.node.geometry}
+      material={props.node.material}
       //onClick={(e) => console.log(e.object.name)}
     />
   )

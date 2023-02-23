@@ -47,7 +47,7 @@ function Main() {
           />          
         </Box>
         <Divider />
-        <imgSelectorContext.Provider value={imgSrc}>
+        <imgSelectorContext.Provider value={{imgSrc, setImgSrc}}>
           <World className='world' />
         </imgSelectorContext.Provider>
       </Box>

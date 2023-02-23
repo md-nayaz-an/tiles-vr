@@ -5,7 +5,7 @@ import { Room } from './plane.js';
 
 import * as THREE from 'three';
 
-import { PerspectiveCamera, OrthographicCamera, Bounds, Center } from '@react-three/drei';
+import { PerspectiveCamera, OrthographicCamera, Bounds, Center, Billboard } from '@react-three/drei';
 
 import { FirstPersonControls, OrbitControls, PointerLockControls, useHelper } from '@react-three/drei';
 import { Box3, CameraHelper, Vector3 } from 'three';
@@ -14,25 +14,37 @@ import WasdControls from '../controls/wasdControls.js';
 import PlayerControls from '../controls/playerKeyboardControl.js';
 import VRControls from '../controls/vrControls.js';
 
+import Panel from '../xrui/imageSelector.js';
+
 import { VRButton, XR, Controllers } from '@react-three/xr';
 
 
 function World() {
 
-  const obj = useLoader( GLTFLoader, './assets/Toilet Model.gltf');
-  /*
-  obj.scene.traverse( (child) => {
-    if( child instanceof THREE.Mesh){
-      console.log(child)
-      child.geometry.scale(0.5,0.5,0.5)
-      console.log(child)
-    }
-  }) */
+  const obj = useLoader( GLTFLoader, './assets/scene(3).gltf');
+  console.log(obj)
+  
+  const container = useRef()
 
-  //console.log(obj.scene);
-  const box = new Box3().setFromObject(obj.scene);
-  const size = box.getSize(new THREE.Vector3()).length();
-  const cent = box.getCenter(new THREE.Vector3());
+  /* obj.scene.traverse( (child) => {
+    if( child instanceof THREE.Mesh){
+  //    console.log(child)
+      child.geometry.scale(0.5,0.5,0.5)
+//      console.log(child)
+    }
+  })
+*/
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+
+
+    return
+  }, [container.current])
+
+  //const box = new Box3().setFromObject(obj.scene);
+  //const size = box.getSize(new THREE.Vector3()).length();
+  //const cent = box.getCenter(new THREE.Vector3());
   /*console.log(cent)
   obj.scene.position.x += (obj.scene.position.x - cent.x);
   obj.scene.position.y += (obj.scene.position.y - cent.y);
@@ -40,12 +52,17 @@ function World() {
   */
   const [center, setCenter] = useState({x:1,y:1,z:1});
   const [session, setSession] = useState(false);
-
   return(
     <div>
       <VRButton />
-      <Canvas
-        camera={{ up:[0,0,1], fov: 30, near: 10, far: 200000, position: [60, 70, -110]}}>
+      <Canvas>
+        <perspectiveCamera 
+          aspect={1200/600}
+          radius={(1200 + 600) / 4}
+          fov={75}
+          position={[60,70,-110]}
+          onUpdate={self => self.updateProjectionMatrix()}
+        />
         <XR
           onSessionStart={(e) => setSession(true)}
           onSessionEnd={(e) => setSession(false)}
@@ -53,25 +70,36 @@ function World() {
         <Controllers />
         <ambientLight color={"#f1f1f1"} />
         <LightComp />
-        <axesHelper args={[2000]} />
+        <axesHelper args={[20]} />
        
-        <mesh position={[cent.x,cent.y,cent.z]}>
+        <mesh position={[0,0,0]} visible={false} ref={container}>
           <boxGeometry args={[1,1,1]} />
           <meshStandardMaterial color={'blue'} />
         </mesh>
+        <Billboard>        
+          <mesh scale={50} visible={false} position={[10,10,10]}>
+            <Panel />
+          </mesh>
+        </Billboard>
         <Center>
-        <Room 
-          obj={obj}
-         // center={center}
-          //setCenter={setCenter}
-        />
+          <mesh scale={scale} visible={true}>
+            <Room 
+              obj={obj}
+              session={session}
+              scale={scale}
+            // center={center}
+              //setCenter={setCenter}
+            />
+          </mesh>
         </Center>
         <Controls
           session={session}
           center={center}
           setCenter={setCenter}
+          scale={scale}
+          setScale={setScale}
         />
-
+        <color args={["#eee"]} attach="background" />
         </XR>
       </Canvas>
     </div>
@@ -79,21 +107,26 @@ function World() {
 }
 
 function Controls(props) {
-  if(!props.session)
+  if(!props.session) {
     return (
       <>
-        <WasdControls center={props.center} setCenter={props.setCenter} />
-        <OrbitControls />
+        {//<WasdControls center={props.center} setCenter={props.setCenter} />
+        }<OrbitControls />
       </>
     )
+      }
   else
       return(<>
         <PlayerControls
           center={props.center}
           setCenter={props.setCenter}
+          scale={props.scale}
+          setScale={props.setScale}
         />
-        <VRControls />
-        <OrthographicCamera makeDefault/>
+        <VRControls 
+          scale={props.scale}
+          setScale={props.setScale}
+        />
         </>
       )
 }

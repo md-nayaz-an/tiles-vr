@@ -2,7 +2,7 @@ import { useXR, useController } from '@react-three/xr';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Vector3 } from 'three';
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 // mapping
 // 1: Trigger
@@ -19,25 +19,44 @@ export default function VRControls({
 	hand = 'right',
 	zeroY = true,
 	horizontalSensitivity = 0.5,
-	forwardSensistivity = 0.05,
+	forwardSensistivity = 0.5,
 	rotationSensitivity = 0.05,
 	deadzone = 0.05,
 	horizontalAxis = 2,
 	forwardAxis = 3,
 	rotationAxis = 2,
-	applyForward = false,
+	applyForward = true,
 	applyHorizontal = false,
 	applyRotation = true,
+	scale,
+	setScale
 }) {
 	const { player } = useXR();
   const val = useXR();
 	const controller = useController(hand);
+	const left = useController('left');
 	const forward = useRef(new Vector3());
 	const horizontal = useRef(new Vector3());
+	console.log(player)
 
+	const { gl, camera, scene } = useThree();
+
+	const cam = gl.xr.getCamera()
+
+	console.log(scene)
+
+
+	useEffect(() => {
+		return
+		}, [])
+
+	let i = 1
 	useFrame(() => {
+
+
 		if (controller && player) {
 			const { axes } = controller.inputSource.gamepad;
+			const { buttons } = controller.inputSource.gamepad;
 			const camera = player.children[0];
 			const cameraMatrix = camera.matrixWorld.elements;
 
