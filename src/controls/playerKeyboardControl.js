@@ -17,7 +17,6 @@ export default function PlayerControls(props) {
   const codes = useRef(new Set())
 
   const [flag, setFlag] = useState(false)
-  const [initV] = useState(props.center);
 
   
   useEffect(() => {

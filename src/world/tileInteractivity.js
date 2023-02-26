@@ -22,10 +22,6 @@ const itemData = [
 ];
 
 export default function LoadTilePrimitive(props) {
-  const ref = useRef();
-  //console.log(ref.current)
-  
-  //console.log(material)
   const [Hover, setHover] = useState(false)
   const [texture, setTexture] = useState(props.texture)
   const [imgCurrent, setCurrent] = useState(props.imgContext.imgSrc)
@@ -69,7 +65,6 @@ export default function LoadTilePrimitive(props) {
       onSelectStart={onSelect}
     >
       <mesh
-        ref={ref}
         geometry={props.node.geometry}
         //visible={!Hover}
         scale={props.scale}

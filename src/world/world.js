@@ -1,4 +1,4 @@
-import { React, useRef, useEffect, useState } from 'react';
+import { React, useRef, useEffect, useState, Suspense } from 'react';
 import { Canvas,useLoader, useFrame, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import { Room } from './plane.js';
@@ -21,36 +21,9 @@ import StatsVR from "statsvr";
 
 function World() {
 
-  const obj = useLoader( GLTFLoader, './assets/scene(3).gltf');
-  console.log(obj)
-  
-  const container = useRef()
 
-  /* obj.scene.traverse( (child) => {
-    if( child instanceof THREE.Mesh){
-  //    console.log(child)
-      child.geometry.scale(0.5,0.5,0.5)
-//      console.log(child)
-    }
-  })
-*/
   const [scale, setScale] = useState(0.172);
 
-  useEffect(() => {
-
-
-    return
-  }, [container.current])
-
-  //const box = new Box3().setFromObject(obj.scene);
-  //const size = box.getSize(new THREE.Vector3()).length();
-  //const cent = box.getCenter(new THREE.Vector3());
-  /*console.log(cent)
-  obj.scene.position.x += (obj.scene.position.x - cent.x);
-  obj.scene.position.y += (obj.scene.position.y - cent.y);
-  obj.scene.position.z += (obj.scene.position.z - cent.z);
-  */
-  const [center, setCenter] = useState({x:1,y:1,z:1});
   const [session, setSession] = useState(false);
   return(
     <div>
@@ -70,30 +43,20 @@ function World() {
         <LightComp />
         <axesHelper args={[20]} />
        
-        <mesh position={[0,0,0]} visible={false} ref={container}>
-          <boxGeometry args={[1,1,1]} />
-          <meshStandardMaterial color={'blue'} />
-        </mesh>
-        <Billboard>        
-          <mesh scale={50} visible={false} position={[10,10,10]}>
-            <Panel />
-          </mesh>
-        </Billboard>
-        <Center disableY={true}>
-          <mesh scale={scale} visible={true}>
-            <Room 
-              obj={obj}
-              session={session}
-              scale={scale}
-            // center={center}
-              //setCenter={setCenter}
-            />
-          </mesh>
-        </Center>
+        <Suspense>
+          <Center disableY={true}>
+            <mesh scale={scale} visible={true}>
+              <Room
+                session={session}
+                scale={scale}
+                setScale={setScale}
+              />
+            </mesh>
+          </Center>
+        </Suspense>
+
         <Controls
           session={session}
-          center={center}
-          setCenter={setCenter}
           scale={scale}
           setScale={setScale}
         />
@@ -128,8 +91,6 @@ function Controls(props) {
   else
       return(<>
         <PlayerControls
-          center={props.center}
-          setCenter={props.setCenter}
           scale={props.scale}
           setScale={props.setScale}
         />

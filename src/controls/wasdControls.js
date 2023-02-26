@@ -8,6 +8,20 @@ CameraControls.install({ THREE })
 extend({ CameraControls })
 
 // Reference to a set of active KeyboardEvent.code entries
+export const useCodes = () => {
+  const codes = useRef(new Set())
+  useEffect(() => {
+    const onKeyDown = (e) => codes.current.add(e.code)
+    const onKeyUp = (e) => codes.current.delete(e.code)
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+    }
+  }, [])
+  return codes
+}
 
 
 // Rotation logic from three/examples/jsm/controls/PointerLockControls.js

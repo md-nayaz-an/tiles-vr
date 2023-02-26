@@ -18,11 +18,6 @@ function Main() {
 
   const [imgSrc, setImgSrc] = useState('M_03_ceramic_2.jpg');
 
-  useEffect(() => {
-    console.log(imgSrc);
-    return;
-  }, [imgSrc]);
-  
   return(
     <Box className='box container'>
       <Box className={'box main main-' + drawerOpen.val}>
