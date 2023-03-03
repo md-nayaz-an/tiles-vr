@@ -67,7 +67,7 @@ export default function LoadTilePrimitive(props) {
       <mesh
         geometry={props.node.geometry}
         //visible={!Hover}
-        scale={props.scale}
+        //scale={props.scale}
         onClick={onSelect}
       >
         <meshStandardMaterial map={texture} />

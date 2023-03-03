@@ -61,12 +61,7 @@ export default function VRControls({
 			const cameraMatrix = camera.matrixWorld.elements;
 
 			
-			if(left.inputSource.gamepad.buttons[5].pressed){
-				setScale(scale+0.001)
-			}
-			if(left.inputSource.gamepad.buttons[4].pressed){
-				setScale(scale-0.001)
-			}
+			
 
 			forward.current
 				.set(-cameraMatrix[8], -cameraMatrix[9], -cameraMatrix[10])

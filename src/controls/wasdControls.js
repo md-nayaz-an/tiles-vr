@@ -35,7 +35,6 @@ export default function WasdControls(props) {
   const codes = useRef(new Set())
 
   const [flag, setFlag] = useState(false)
-  const [initV] = useState(props.center);
   
 
   useEffect(() => {
@@ -45,15 +44,10 @@ export default function WasdControls(props) {
     window.addEventListener('keyup', onKeyUp)
     
     camControls.current.reset(true)
-    camControls.current.enabled = false;
-    camera.position.x = props.center.x;
-    camera.position.y = props.center.y;
-    camera.position.z = -props.center.z;
+    camControls.current.enabled = false
     camControls.current.setLookAt(10,10,10,0,100,0,true)
     
-    const v = props.center
-    camControls.current.setOrbitPoint(v.x,v.y,v.z);
-
+    
     return () => {
       //props.setCenter(props.center)
       window.removeEventListener('keydown', onKeyDown)
@@ -101,8 +95,7 @@ export default function WasdControls(props) {
       camControls.current.rotate( -0.025 , 0, true);
     }
     if (codes.current.has('KeyR')) {
-      console.log(initV)
-      camControls.current.setPosition(initV.x, initV.y, -initV.z, true)
+      
     }
     
     if(flag) {

@@ -3,9 +3,9 @@ import { useLoader, useThree, useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import * as THREE from 'three';
 
-import { useHelper, useTexture } from '@react-three/drei';
+import { CubeCamera, useHelper, useTexture} from '@react-three/drei';
 
-import { Box3, BoxHelper, RepeatWrapping, TextureLoader, Vector3 } from 'three';
+import { Box3, BoxHelper, CubeReflectionMapping, EquirectangularReflectionMapping, RepeatWrapping, TextureLoader, Vector3 } from 'three';
 
 import { BBAnchor } from '@react-three/drei';
 
@@ -27,6 +27,8 @@ export function Room(props) {
   console.log(obj);
 
   const { nodes, materials } = obj
+
+  let envTexture;
 
   const texture = useLoader(TextureLoader ,`./assets/textures/${imgContext.imgSrc}`);
   texture.flipY = false;
@@ -107,7 +109,14 @@ export function Room(props) {
   })
   return(
     <>
+    <CubeCamera visible={false}>
+      {(texture) => {
+        envTexture = texture
+      }}
+    </CubeCamera>
+      
       {
+      
         Object.entries(nodes).map(([index, node])  => {
           if(typeof node.material !== 'undefined') {
             if(node.material.name === 'M_03_ceramic_2') {
@@ -121,8 +130,28 @@ export function Room(props) {
                 />)
             }
           }
+          
+          if(node.name === "Mesh2_Object_56_1_Group1_Model"){
+              return(
+                        <mesh
+                          geometry={node.geometry}  
+                        >
+                          <meshPhysicalMaterial
+                            color={'#ffffff'}
+                            emissive={'#000000'}
+                            roughness={0.5}
+                            metalness={1}
+                            reflectivity={1}
+                            envMap={envTexture}
+                            envMapIntensity={40}
+                            />
+                        </mesh>
+              )
+          }
+             
           return(<LoadPrimitive key={index} node={node} scale={props.scale} />)
         })
+      
       }
     </>
   )
@@ -132,10 +161,9 @@ export function Room(props) {
 function LoadPrimitive(props) {
   return(
     <mesh
-      scale={props.scale}
+      //scale={props.scale}
       geometry={props.node.geometry}
       material={props.node.material}
-      //onClick={(e) => console.log(e.object.name)}
     />
   )
 }

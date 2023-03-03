@@ -5,10 +5,10 @@ import { Room } from './plane.js';
 
 import * as THREE from 'three';
 
-import { PerspectiveCamera, OrthographicCamera, Bounds, Center, Billboard } from '@react-three/drei';
+import { PerspectiveCamera, OrthographicCamera, Bounds, Center, Billboard, MeshReflectorMaterial, CubeCamera } from '@react-three/drei';
 
 import { FirstPersonControls, OrbitControls, PointerLockControls, useHelper } from '@react-three/drei';
-import { Box3, CameraHelper, Vector3 } from 'three';
+import { Box3, CameraHelper, CubeUVReflectionMapping, Mesh, Vector3 } from 'three';
 
 import WasdControls from '../controls/wasdControls.js';
 import PlayerControls from '../controls/playerKeyboardControl.js';
@@ -19,10 +19,11 @@ import Panel from '../xrui/imageSelector.js';
 import { VRButton, XR, Controllers } from '@react-three/xr';
 import StatsVR from "statsvr";
 
+
 function World() {
 
 
-  const [scale, setScale] = useState(0.172);
+  const [scale, setScale] = useState(0.028);
 
   const [session, setSession] = useState(false);
   return(
@@ -30,6 +31,7 @@ function World() {
       <VRButton />
       <Canvas>
         <perspectiveCamera 
+          makeDefault
           aspect={1200/600}
           radius={(1200 + 600) / 4}
           fov={75}
@@ -55,6 +57,11 @@ function World() {
           </Center>
         </Suspense>
 
+        
+
+        <OrbitControls />
+        <LightComp />
+
         <Controls
           session={session}
           scale={scale}
@@ -69,6 +76,7 @@ function World() {
 
 function Controls(props) {
   
+  /*
   const { scene, camera } = useThree();
   const statsVR = new StatsVR(scene, camera);
   statsVR.setX(3)
@@ -79,12 +87,10 @@ function Controls(props) {
     statsVR.setCustom1('scale:' + props.scale)
     statsVR.update()
   })
-  
+  */
   if(!props.session) {
     return (
       <>
-        {//<WasdControls center={props.center} setCenter={props.setCenter} />
-        }<OrbitControls />
       </>
     )
       }
@@ -109,7 +115,7 @@ function LightComp() {
 
   return(
     <>
-      <pointLight ref={light1} color={'#ffffff'} position={[85,74,105]}/>
+      <pointLight ref={light1} color={'#ffffff'} position={[10,10,10]}/>
       <pointLight ref={light2} color={'#ffffff'} position={[85,128,105]}/>
       <pointLight ref={light3} color={'#ffffff'} position={[70,166,105]}/>
     </>
