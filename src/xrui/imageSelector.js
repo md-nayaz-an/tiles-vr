@@ -16,7 +16,7 @@ const itemData = [
   'Calacatta-Vena-Architextures.jpg',
   'Granite-Architextures.jpg',
   'Green-Marble-Architextures.jpg',
-  'grungy-gray-marble-textured-background.jpg',
+  //'grungy-gray-marble-textured-background.jpg',
   'M_02_ceramic_3.jpg',
   'M_03_ceramic_1.jpg',
   'M_03_ceramic_2.jpg',

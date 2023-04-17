@@ -23,7 +23,7 @@ import StatsVR from "statsvr";
 function World() {
 
 
-  const [scale, setScale] = useState(0.028);
+  const [scale, setScale] = useState(0.0275);
 
   const [session, setSession] = useState(false);
   return(
