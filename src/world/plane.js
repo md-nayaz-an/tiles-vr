@@ -57,10 +57,11 @@ export function Room(props) {
 
 
 
-    const controller = useController('right');
+  const controller = useController('right');
 
 
   let i = 0;
+  /*
   useFrame((_, delta) => {
     if(controller) {
       i += delta
@@ -106,7 +107,7 @@ export function Room(props) {
     if(code.current.has('KeyU')) {
       props.setScale(props.scale - 0.001)
     }
-  })
+  }) */
   return(
     <>
     <CubeCamera visible={false}>

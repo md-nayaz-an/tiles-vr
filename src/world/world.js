@@ -18,6 +18,9 @@ import Panel from '../xrui/imageSelector.js';
 
 import { VRButton, XR, Controllers } from '@react-three/xr';
 import StatsVR from "statsvr";
+import MainUI from '../ui/ui.js';
+import { clippingEvents } from '@coconut-xr/koestlich';
+import ImmersiveSession from '../ui/immersiveSession.js';
 
 
 function World() {
@@ -29,7 +32,9 @@ function World() {
   return(
     <div>
       <VRButton />
-      <Canvas>
+      <Canvas
+        events={clippingEvents} gl={{ localClippingEnabled: true}}
+      >
         <perspectiveCamera 
           makeDefault
           aspect={1200/600}
@@ -59,14 +64,8 @@ function World() {
 
         
 
-        <OrbitControls />
         <LightComp />
-
-        <Controls
-          session={session}
-          scale={scale}
-          setScale={setScale}
-        />
+        <ImmersiveSession />
         <color args={["#eee"]} attach="background" />
         </XR>
       </Canvas>
@@ -100,10 +99,11 @@ function Controls(props) {
           scale={props.scale}
           setScale={props.setScale}
         />
-        <VRControls 
+        
+        {/*<VRControls 
           scale={props.scale}
           setScale={props.setScale}
-        />
+        />*/}
         </>
       )
 }
