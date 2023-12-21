@@ -1,14 +1,20 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useRef } from 'react'
 import { Container, FontFamilyProvider, RootContainer } from "@coconut-xr/koestlich";
 import Glass from './glass';
 import { useThree } from '@react-three/fiber';
 import ImageGrid from './imageGrid';
-import { Interactive } from '@react-three/xr';
-const MainUI = () => {
+import { isXIntersection } from "@coconut-xr/xinteraction";
+
+const MainUI = ({ setDraggable }) => {
     const aspectRatio = useThree(({ size }) => size.width / size.height);
+    
+    const ref = useRef(null);
+    const downState = useRef();
     return (
         <group
             scale={Math.min(1, aspectRatio * 0.7) / 1200}
+            position={[0, 1.5, -0.5]}
+            ref={ref}
             >
             <FontFamilyProvider
                 fontFamilies={{
@@ -24,16 +30,70 @@ const MainUI = () => {
                     sizeX={1024}
                     sizeY={796}
                     pixelSize={1}
-                    flexDirection="row"
+                    flexDirection="column"
+                    alignItems='center'
+                    gapRow={10}
+                    //rotation={[-Math.PI/3,0,0]}
+                    position={[0,0,-600]}
                 >
                     <Glass
                         width="100%"
-                        height="100%"
+                        height="90%"
                         borderRadius={32}
-                        borderLeft={0}
+                        
+                        onPointerEnter={() => setDraggable(false)}
                     >
                         <ImageGrid />
                     </Glass>
+
+                    <Container
+                        width="40%"
+                        onPointerDown={(e) => {
+                            if (
+                            ref.current != null &&
+                            downState.current == null &&
+                            isXIntersection(e)
+                            ) {
+                            e.stopPropagation();
+                            (e.target).setPointerCapture(e.pointerId);
+                            downState.current = {
+                                pointerId: e.pointerId,
+                                pointToObjectOffset: ref.current.position
+                                .clone()
+                                .sub(e.point),
+                            };
+                            }
+                        }}
+                        onPointerUp={(e) => {
+                            if (downState.current?.pointerId != e.pointerId) {
+                            return;
+                            }
+                            downState.current = undefined;
+                        }}
+                        onPointerMove={(e) => {
+                            if (
+                            ref.current == null ||
+                            downState.current == null ||
+                            e.pointerId != downState.current.pointerId ||
+                            !isXIntersection(e)
+                            ) {
+                            return;
+                            }
+                            ref.current.position
+                            .copy(downState.current.pointToObjectOffset)
+                            .add(e.point);
+                        }}
+                        padding={20}
+                        >
+                        <Container
+                            borderRadius={5}
+                            padding={5}
+                            marginX="auto"
+                            width="80%"
+                            backgroundOpacity={0.5}
+                            backgroundColor="white"
+                        />
+                        </Container>
                 </RootContainer>
                 </Suspense>
             </FontFamilyProvider>

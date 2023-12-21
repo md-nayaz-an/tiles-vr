@@ -35,10 +35,8 @@ export default function LoadTilePrimitive(props) {
     if((loc+1) % 3 === 0)
       loc -= 3
     loc += 1
-    console.log(loc)
 
     setCurrent(itemData[loc])
-    console.log(imgCurrent)
     const newTexture = loader.load(`./assets/textures/${itemData[loc]}`)
     newTexture.flipY = false;
     newTexture.wrapS = RepeatWrapping;
@@ -59,19 +57,14 @@ export default function LoadTilePrimitive(props) {
   }, [props.imgContext])
 
   return(
-    <Interactive
-      onHover={() => setHover(true)}
-      onBlur={() => setHover(false)}
-      onSelectStart={onSelect}
-    >
+    
       <mesh
         geometry={props.node.geometry}
         //visible={!Hover}
         //scale={props.scale}
-        onClick={onSelect}
+        //onClick={onSelect}
       >
         <meshStandardMaterial map={texture} />
       </mesh>
-    </Interactive>
-  )
+    )
 }

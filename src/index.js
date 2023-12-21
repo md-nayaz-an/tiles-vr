@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client'
 
-import { World } from './world/world.js';
 import { Utils } from './utility/utilMain.js';
 
 import './stylesheets/main.css';
@@ -11,6 +10,7 @@ import { Divider } from '@mui/material';
 import { ChevronLeftRounded, ChevronRightRounded } from '@mui/icons-material';
 
 import imgSelectorContext from './contexts';
+import World from './world/worldtemp.js';
 
 function Main() {
 
@@ -43,7 +43,7 @@ function Main() {
         </Box>
         <Divider />
         <imgSelectorContext.Provider value={{imgSrc, setImgSrc}}>
-          <World className='world' />
+          <World className="world"/>
         </imgSelectorContext.Provider>
       </Box>
       <Box className={'box drawer drawer-' + drawerOpen.val}>

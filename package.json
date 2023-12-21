@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coconut-xr/apfel-kruemel": "^0.0.6",
     "@coconut-xr/koestlich": "^0.3.12",
     "@coconut-xr/natuerlich": "^0.0.48",
     "@emotion/react": "^11.10.5",
@@ -37,7 +38,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

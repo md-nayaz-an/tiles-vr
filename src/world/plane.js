@@ -56,12 +56,12 @@ export function Room(props) {
 
 
 
-
+/*
   const controller = useController('right');
 
 
   let i = 0;
-  /*
+  
   useFrame((_, delta) => {
     if(controller) {
       i += delta

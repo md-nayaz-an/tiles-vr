@@ -1,8 +1,11 @@
 import { Container, Image, Text } from "@coconut-xr/koestlich";
-import { Suspense, useState } from "react";
+import { Suspense, useContext, useState } from "react";
+import imgSelectorContext from "../contexts";
 
 function ImageCard(props) {
   const [hoverCount, setHoverCount] = useState(0);
+  
+  const imgContext = useContext(imgSelectorContext);
 
   return (
     <Container
@@ -14,6 +17,10 @@ function ImageCard(props) {
       backgroundOpacity={hoverCount > 0 ? 0.1 : 0}
       borderRadius={8}
       width={"30%"}
+      onClick={() => {
+        imgContext.setImgSrc(props.src)
+        console.log(props.src)
+      }}
     >
       <Suspense>
         <Image url={"./assets/textures/" + props.src} fit="fill" width={"100%"}/>

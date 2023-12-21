@@ -1,5 +1,7 @@
 import { Container, noAnimation } from "@coconut-xr/koestlich";
 import ImageCard from "./imageCard";
+import { useContext } from "react";
+import imgSelectorContext from "../contexts";
 
 const itemData = [
     'Blonde-Sandstone-Architextures.jpg',
@@ -20,6 +22,8 @@ const itemData = [
 ];
 
 function ImageGrid() {
+
+
     return (
             <Container
                 height="100%"
@@ -33,7 +37,10 @@ function ImageGrid() {
                 justifyContent="center"
             >
                 {itemData.map((imageSrc, index) => (
-                    <ImageCard key={index} src={imageSrc} />
+                    <ImageCard 
+                        key={index} 
+                        src={imageSrc} 
+                    />
                 ))}
             </Container>
   );
