@@ -73,19 +73,8 @@ export default function World() {
         style={{
           padding: "1rem",
           position: "absolute",
-          top: "1rem",
-          left: "1rem",
-        }}
-        onClick={enterAR}
-      >
-        AR
-      </button>
-      <button
-        style={{
-          padding: "1rem",
-          position: "absolute",
-          top: "5rem",
-          left: "1rem",
+          bottom: "5rem",
+          right: "1rem",
         }}
         onClick={enterVR}
       >

@@ -1,13 +1,16 @@
-import React, { Suspense, useRef } from 'react'
-import { Container, FontFamilyProvider, RootContainer } from "@coconut-xr/koestlich";
+import React, { Suspense, useContext, useRef } from 'react'
+import { Container, FontFamilyProvider, RootContainer, Text } from "@coconut-xr/koestlich";
 import Glass from './glass';
 import { useThree } from '@react-three/fiber';
 import ImageGrid from './imageGrid';
 import { isXIntersection } from "@coconut-xr/xinteraction";
+import imgSelectorContext from '../contexts';
 
 const MainUI = ({ setDraggable }) => {
     const aspectRatio = useThree(({ size }) => size.width / size.height);
     
+    const imgContext = useContext(imgSelectorContext);
+
     const ref = useRef(null);
     const downState = useRef();
     return (
@@ -43,6 +46,16 @@ const MainUI = ({ setDraggable }) => {
                         
                         onPointerEnter={() => setDraggable(false)}
                     >
+                        <Container paddingX={8} paddingY={8}>
+                            <Suspense>
+                            <Text fontSize={26} color="white" fontFamily="bold">
+                                Choose a Tile
+                            </Text>
+                            <Text fontSize={14} color="white" opacity={0.6}>
+                                Current "{imgContext.imgSrc}"
+                            </Text>
+                            </Suspense>
+                        </Container>
                         <ImageGrid />
                     </Glass>
 

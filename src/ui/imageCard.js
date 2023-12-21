@@ -28,9 +28,11 @@ function ImageCard(props) {
           <Text fontSize={16} color="white">
             {props.src}
           </Text>
+          {/*
           <Text fontSize={16} color="white" opacity={0.5}>
             {props.src}
           </Text>
+          */}
         </Container>
       </Suspense>
     </Container>
